@@ -5,4 +5,4 @@ Para este projeto será utilizado também o padrão de modelagem DDD com IoC.<br
 
 Para a utilização do docker, está sendo utilizado uma virtualização do sistema do Fedora na VirtualBox.<br />
 Comando do docker utilizado para criar o container:<br />
-docker run -d -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=estudoapi postgres
+docker run -d -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=estudoapi -e POSTGRES_USER=estudoapi postgres
