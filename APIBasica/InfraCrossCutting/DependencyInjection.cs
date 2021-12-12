@@ -1,16 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Domain.Interfaces;
+using Infra.Repositories;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace InfraCrossCutting
 {
     public static class DependencyInjection
     {
-        public static IServiceProvider AddDependencies(IServiceProvider service)
+        public static IServiceCollection AddDependencies(IServiceCollection service)
         {
+            //Repositories
+            service.AddScoped<IRepositorioProduto, RepositorioProduto>();
+            service.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
 
+            //Services
 
             return service;
         }
