@@ -1,6 +1,8 @@
 ﻿using Domain.Interfaces;
 using Infra.Repositories;
 using Microsoft.Extensions.DependencyInjection;
+using Service.Interfaces;
+using Service.Services;
 
 namespace InfraCrossCutting
 {
@@ -13,6 +15,7 @@ namespace InfraCrossCutting
             service.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
 
             //Services
+            service.AddScoped<IServicosProduto, ServicosProduto>();
 
             return service;
         }
