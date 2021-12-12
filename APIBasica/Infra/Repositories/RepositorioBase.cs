@@ -14,16 +14,28 @@ namespace Infra.Repositories
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public virtual async void Criar(T model)
+        public virtual async Task<Resultado<T>> Criar(T model)
         {
+            var resultado = new Resultado<T>();
             try
             {
-                await _context.AddAsync(model);
+                var resposta = _context.AddAsync(model);
+                if (resposta.IsCompleted)
+                {
+                    await _context.SaveChangesAsync();
+                    resultado.ConfirmaSucesso();
+                }
+                else
+                {
+                    resultado.AddErro("Ocorreu um erro ao criar o registro.");
+                }
+                
             }
             catch (Exception)
             {
                 throw;
             }
+            return resultado;
         }
 
         public virtual async Task<Resultado<IEnumerable<T>>> BuscarTodos()
@@ -76,21 +88,46 @@ namespace Infra.Repositories
             return resultado;
         }
 
-        public virtual async Task<Resultado<T>> Atualizar(int id)
+        public virtual async Task<Resultado<T>> Atualizar(T model)
+        {
+            var resultado = new Resultado<T>();
+            try
+            {
+                var resposta = await BuscarPorId(model.Id);
+                if(resposta.Entidade != null)
+                {
+                    _context.Entry(resposta.Entidade).CurrentValues.SetValues(model);
+                    await _context.SaveChangesAsync();
+                    resultado.ConfirmaSucesso();
+                }
+                else
+                {
+                    resultado.AddErro("Não foi encontrado o registro com o id desejado para prosseguir com a atualização.");
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+            return resultado;
+        }
+
+        public virtual async Task<Resultado<T>> Deletar(int id)
         {
             var resultado = new Resultado<T>();
             try
             {
                 var resposta = await BuscarPorId(id);
-                if(resposta.Entidade != null)
+                if (resposta.Entidade != null)
                 {
-                    _context.Entry<T>(resposta.Entidade).State = EntityState.Modified;
+                    _context.Entry(resposta.Entidade).State = EntityState.Deleted;
                     await _context.SaveChangesAsync();
-                    resposta.ConfirmaSucesso();
+                    resultado.ConfirmaSucesso();
                 }
                 else
                 {
-                    resultado.AddErro("Não foi encontrado o registro com o id desejado para prosseguir com a atualização.");
+                    resultado.AddErro("Não foi encontrado o registro com o id desejado para deletar.");
                 }
             }
             catch (Exception)

@@ -1,14 +1,14 @@
-﻿namespace Domain.Models
+﻿namespace Service.Dtos
 {
-    public class Produto : ModeloBase
+    public class ProdutoDto : ModeloBaseDto
     {
         public string Nome { get; set; }
         public float Peso { get; set; }
         public int CategoriaId { get; set; }
-        public Categoria? Categoria { get; set; }
+        public CategoriaDto? Categoria { get; set; }
         public DateTime DataCadastro { get; set; }
 
-        public Produto(string nome, float peso)
+        public ProdutoDto(string nome, float peso)
         {
             Nome = nome;
             Peso = peso;
