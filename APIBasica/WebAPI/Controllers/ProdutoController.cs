@@ -14,8 +14,8 @@ namespace WebAPI.Controllers
 
         public ProdutoController(ILogger<ProdutoController> logger, IServicosProduto servicosProduto)
         {
-            _logger = logger;
-            _servicosProduto = servicosProduto;
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _servicosProduto = servicosProduto ?? throw new ArgumentNullException(nameof(servicosProduto));
         }
 
         [HttpPost("Criar")]
